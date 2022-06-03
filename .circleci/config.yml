@@ -222,6 +222,7 @@ jobs:
           at: ~/
       - run:
           name: Install dependencies
+          working_directory: /tmp
           command: |
             sudo apt-get update
             sudo apt-get install -yy less
@@ -230,12 +231,14 @@ jobs:
             sudo ./aws/install 
       - run:
           name: Run migrations
+          working_directory: ./backend
           command: |
-            cd backend
-            npm install
-            npm audit fix --audit-level=critical --force
-            npm audit fix --force
-            npm run migrations:revert > migrations_dump.txt
+            # cd backend
+            # npm install
+            # npm audit fix --audit-level=critical --force
+            # npm audit fix --force
+            # npm run migrations:revert
+            npm run migrations > migrations_dump.txt
       - run:
           name: Send migration status to kvdb.io
           command: |
