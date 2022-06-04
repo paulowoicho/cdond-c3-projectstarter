@@ -52,21 +52,23 @@
     sudo env PATH=$PATH:/usr/bin /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u ubuntu --hp /home/ubuntu
   ignore_errors: true
 
-- name: Setup Install nvm
+- name: Install nvm
   become: yes
   become_method: sudo
-  become_flags: -i # Execute config files such as .profile (Ansible uses non-interactive login shells)
+  become_flags: -i
   become_user: ubuntu
   block:
     - name: Install nvm
-      command: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash
+      shell: | 
+        sudo apt install curl 
+        curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
       args:
         executable: /bin/bash
         chdir: "$HOME"
         creates: "$HOME/.nvm/nvm.sh"
         warn: false
 
-- name: "reload-bashrc-settings-without-logging-out-and-back-in-again"
+- name: "Reload bashrc"
   become: true
   shell: >
     cd ~/
@@ -78,7 +80,7 @@
 - name: Setup .profile
   ansible.builtin.lineinfile:
     path: ~/.profile
-    line: source ~/.nvm/nvm.sh # This will make sure Node is on the user's PATH
+    line: source ~/.nvm/nvm.sh
     create: yes
 
 - name: "Install loggly Configure Syslog Daemon"
