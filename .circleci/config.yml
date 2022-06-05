@@ -273,7 +273,7 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}")
-            curl --insecure https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/backend_ip_${CIRCLE_WORKFLOW_ID:0:7} -d "${BACKEND_IP}"
+            # curl --insecure https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/backend_ip_${CIRCLE_WORKFLOW_ID:0:7} -d "${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
@@ -344,10 +344,12 @@ jobs:
             apk add --update curl
             pip3 install --upgrade pip 
             pip install awscli
+      - attach_workspace:
+          at: ~/
       - run:
           name: backend smoke test
           command: |
-            export BACKEND_IP=$(curl --insecure https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/backend_ip_${CIRCLE_WORKFLOW_ID:0:7})
+            export BACKEND_IP=$(tail -1 .circleci/ansible/inventory.txt)
             echo "BACKEND_IP is ${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
