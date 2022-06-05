@@ -60,14 +60,14 @@
 
 - name: "stop delete anything that might already be running"
   become: true
-  command: pm2 stop default
+  command: pm2 delete all
   ignore_errors: true
 
 - name: "start server"
   become: true
   shell: >
     cd /opt/udapeople-app
-    pm2 start npm -- start
+    pm2 start -f ./main.js
 
 # - name: " pm2 serve udapeople-app in port 3030 "
 #   become: true
