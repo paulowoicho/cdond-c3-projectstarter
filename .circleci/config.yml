@@ -257,8 +257,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -268,6 +266,8 @@ jobs:
             sudo yum update -y   
             curl -sL https://rpm.nodesource.com/setup_13.x | sudo -E bash -
             sudo yum install -y nodejs
+      - attach_workspace:
+          at: ~/
       - run:
           name: Get backend url
           command: |
