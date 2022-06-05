@@ -314,6 +314,7 @@ jobs:
             cd backend
             npm i
             npm run build
+            cd ..
             # cd ~/project/
             # Zip the directory
             # tar -zcvf backend.tar.gz ./backend/ 
