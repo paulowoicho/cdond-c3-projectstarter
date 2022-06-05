@@ -218,6 +218,8 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - restore_cache:
+          keys: [backend-build]
       - attach_workspace:
           at: ~/
       - run:
@@ -226,6 +228,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -yy less
+            sudo apt-get install -y tar
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
