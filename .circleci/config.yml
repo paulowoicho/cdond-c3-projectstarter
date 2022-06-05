@@ -12,8 +12,8 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rm s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-            aws s3 rb s3://udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} --force
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}      
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
@@ -28,8 +28,8 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # SUCCESS = curl --insecure  https://kvdb.io/XsgrYuyPESbxCcte4sLxEM/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}
-            SUCCESS=$(curl --insecure  https://kvdb.io/XsgrYuyPESbxCcte4sLxEM/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
+            # SUCCESS = curl --insecure  https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/migration_$\{CIRCLE_WORKFLOW_ID:0:7\}
+            SUCCESS=$(curl --insecure  https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/migration_$\{CIRCLE_WORKFLOW_ID:0:7\})
             if(( $SUCCESS=='1')); 
             then
               cd ~/project/backend
@@ -248,7 +248,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl --insecure https://kvdb.io/68WLrFEKTp9BrBiY1VPk6A/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl --insecure https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       - destroy-environment
       - revert-migrations
@@ -278,7 +278,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
 
-            curl --insecure https://kvdb.io/68WLrFEKTp9BrBiY1VPk6A/backend_ip_${CIRCLE_WORKFLOW_ID:0:7} -d ${API_URL}
+            curl --insecure https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/backend_ip_${CIRCLE_WORKFLOW_ID:0:7} -d ${API_URL}
       - run:
           name: Deploy frontend objects
           command: |
@@ -348,7 +348,7 @@ jobs:
       - run:
           name: backend smoke test
           command: |
-            export BACKEND_IP=$(curl --insecure https://kvdb.io/68WLrFEKTp9BrBiY1VPk6A/backend_ip_${CIRCLE_WORKFLOW_ID:0:7})
+            export BACKEND_IP=$(curl --insecure https://kvdb.io/Caj1kcqbbfxchACoRaEwrz/backend_ip_${CIRCLE_WORKFLOW_ID:0:7})
             echo "BACKEND_IP is ${BACKEND_IP}"
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
