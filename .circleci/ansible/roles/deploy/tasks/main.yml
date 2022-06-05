@@ -17,28 +17,17 @@
   become: true
   command: ls -l ~/backend.tar.gz
 
-- name: "Move backend files to Udapeople directory "
-  become: true
-  copy:
-    src: "~/"
-    dest: "/udapeople-app"
-    remote_src: yes
-    owner: ubuntu
-    group: ubuntu
-    mode: 0777
-
-- name: "Unzio backend files"
+- name: "Unzip backend files"
   become: true
   shell: |
-    cd /udapeople
-    tar xvzf backend.tar.gz
-    rm backend.tar.gz
-    cd backend/
+    pwd
+    tar xvzf ~/backend.tar.gz
+    rm -rf ~/backend.tar.gz
 
 - name: "Check and install npm"
   become: true
   shell: >
-    cd /udapeople/backend
+    cd ~/backend
     npm install
     pm2 stop default
     pm2 start npm -- start
