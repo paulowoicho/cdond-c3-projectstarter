@@ -17,7 +17,7 @@
   become: true
   command: ls -l ~/backend.tar.gz
 
-- name: "Move backend files to Udapeople APP directory "
+- name: "Move backend files to Udapeople directory "
   become: true
   copy:
     src: "~/"
@@ -27,12 +27,12 @@
     group: ubuntu
     mode: 0777
 
-- name: "Un-compress Backend"
+- name: "Unzio backend files"
   become: true
   shell: |
     cd /opt/udapeople-app
     tar xvzf backend.tar.gz
-    rm backend.tar.gz
+    rm backend.tar.gzpermanently delet
     cd backend/
     ls -la
 
@@ -41,8 +41,6 @@
   shell: >
     cd /opt/udapeople-app
     npm install
-  # args:
-  #   chdir: "/opt/udapeople-app/backend"
 
 - name: "Check and install npm dotenv"
   become: true
@@ -62,23 +60,29 @@
 
 - name: "stop delete anything that might already be running"
   become: true
-  command: pm2 kill
+  command: pm2 stop default
   ignore_errors: true
 
-- name: " pm2 serve udapeople-app in port 3030 "
+- name: "start server"
   become: true
   shell: >
-    cd ~/
-    pm2 
-    pm2 serve /opt/udapeople-app/backend/dist 3030
-  ignore_errors: true
+    cd /opt/udapeople-app
+    pm2 start npm -- start
 
-- name: "start udapeople-app server"
-  become: true
-  shell: >
-    pm2 start -f ./main.js
-    pm2 save
+# - name: " pm2 serve udapeople-app in port 3030 "
+#   become: true
+#   shell: >
+#     cd ~/
+#     pm2 
+#     pm2 serve /opt/udapeople-app/backend/dist 3030
+#   ignore_errors: true
+
+# - name: "start udapeople-app server"
+#   become: true
+#   shell: >
+#     pm2 start -f ./main.js
+#     pm2 save
     
-  args:
-    chdir: "/opt/udapeople-app/backend/dist"
-  ignore_errors: true
+#   args:
+#     chdir: "/opt/udapeople-app/backend/dist"
+#   ignore_errors: true
